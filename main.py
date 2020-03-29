@@ -14,7 +14,7 @@ def index():
 @main.route("/server")
 @login_required
 def server():
-    service_status = Arkservice().status()
+    service_status = ArkService().status()
     #service_status = b'active'.decode("utf-8") 
     return render_template("server.html", service_status=service_status)
 
@@ -23,7 +23,7 @@ def server():
 def server_manage():
     desired_status = request.values.get("status")
     if desired_status == 0:
-        Arkservice().stop()
+        ArkService().stop()
     else:
-        Arkservice().start()
+        ArkService().start()
     return redirect(url_for("main.server"))
