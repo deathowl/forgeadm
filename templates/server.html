@@ -12,7 +12,7 @@
     <div class="box">
         <div>Server is running, terminate</div>
         <form method="POST" action="/server">
-            <input type="hidden", value=0>
+            <input type="hidden", name="status", value=0>
             <button class="button is-block is-danger is-large is-fullwidth">Terminate</button>
         </form>
     </div>
@@ -21,7 +21,7 @@
     <div class="box">
         <div>Server is dead, start</div>
         <form method="POST" action="/server">
-            <input type="hidden", value=1>
+            <input type="hidden", name="status", value=1>
             <button class="button is-block is-large is-fullwidth">Launch</button>
         </form>
     </div>
