@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 
-# from service import ArkService
+from service import ArkService
 from flask_login import login_required
 
 main = Blueprint("main", __name__)
