@@ -3,9 +3,7 @@
 {% block content %}
 <h1 class="title">
     {% if service_status == "activating" %}
-    <div class="box">
         <div>Server is starting please wait..</div>
-    </div>
         {% elif service_status == "deactivating" %}
         <div>Server is stopping, please wait...</div>
     {% elif service_status == "active" %}
