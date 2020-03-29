@@ -21,7 +21,7 @@ def server():
 @main.route("/server", methods=["POST"])
 @login_required
 def server_manage():
-    desired_status = request.values.get("status")
+    desired_status = int(request.values.get("status"))
     if desired_status == 0:
         ArkService().stop()
     else:
