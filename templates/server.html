@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="title">
+    {% if service_status == "activating" %}
+    <div class="box">
+        <div>Server is starting please wait..</div>
+    </div>
+        {% elif service_status == "deactivating" %}
+        <div>Server is stopping, please wait...</div>
+    {% elif service_status == "active" %}
+    <div class="box">
+        <div>Server is running, terminate</div>
+        <form method="POST" action="/server">
+            <input type="hidden", value=0>
+            <button class="button is-block is-danger is-large is-fullwidth">Terminate</button>
+        </form>
+    </div>
+    
+    {% elif service_status == "failed" %}
+    <div class="box">
+        <div>Server is dead, start</div>
+        <form method="POST" action="/server">
+            <input type="hidden", value=1>
+            <button class="button is-block is-large is-fullwidth">Launch</button>
+        </form>
+    </div>
+    
+    {% endif %}
+
+</h1>
+{% endblock %}
