@@ -1,30 +1,239 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 class="title">
-    {% if service_status == "activating" %}
-        <div>Server is starting please wait..</div>
-        {% elif service_status == "deactivating" %}
-        <div>Server is stopping, please wait...</div>
-    {% elif service_status == "active" %}
-    <div class="box">
-        <div>Server is running, terminate</div>
-        <form method="POST" action="/server">
-            <input type="hidden", name="status", value=0>
-            <button class="button is-block is-danger is-large is-fullwidth">Terminate</button>
-        </form>
-    </div>
-    
-    {% elif service_status == "failed" %}
-    <div class="box">
-        <div>Server is dead, start</div>
-        <form method="POST" action="/server">
-            <input type="hidden", name="status", value=1>
-            <button class="button is-block is-large is-fullwidth">Launch</button>
-        </form>
-    </div>
-    
-    {% endif %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<div class="box">
+    <h1 class="title"> Server Management </h1>
 
-</h1>
+        {% if service_status == "activating" %}
+            <div>Server is starting please wait..</div>
+            {% elif service_status == "deactivating" %}
+            <div>Server is stopping, please wait...</div>
+        {% elif service_status == "active" %}
+            <div>Server is running, terminate</div>
+            <form method="POST" action="/server">
+                <input type="hidden", name="status", value=0>
+                <button class="button is-block is-danger is-large is-fullwidth">Terminate</button>
+            </form>
+        
+        {% elif service_status == "failed" %}
+            <div>Server is dead, start</div>
+            <form method="POST" action="/server">
+                <input type="hidden", name="status", value=1>
+                <button class="button is-block is-large is-fullwidth">Launch</button>
+            </form>
+        
+        {% endif %}
+        <h1 class="title"> Server Charts </h1>
+
+        <div id="ticktime" class="chart"></div>
+        <div id="ticktime_per_dim" class="chart"></div>
+        <div id="tps" class="chart"></div>
+        <div id="tps_per_dim" class="chart"></div>
+</div>
+<script>
+    // ticktime
+    var tickoptions = {
+        chart: {
+            type: 'spline',
+            events: {
+                load: getTickData
+            }
+        },
+        title: {
+            text: 'Ticktime [High is bad(>60)]'
+        },
+        xAxis: {
+            type: 'datetime',
+        },
+        yAxis: {
+            title: {
+            text: 'Ticktime'
+            }
+        },
+        legend: {
+            enabled: true
+        },
+        exporting: {
+            enabled: false
+        },
+        series: [{
+            name: 'Ticktime',
+            data: []
+        }]
+    };
+    var tickchart = Highcharts.chart('ticktime', tickoptions)
+    updateTicktime()
+    function updateTicktime() {
+        fetch('/metrics/ticktime').then(function(response) {
+        return response.json()
+        }).then(function(data) {
+        data.forEach(element => {
+            tickchart.series[0].addPoint({ x: element[0] * 1000, y: Number(element[1]) })
+        });
+        })
+    }
+    function getTickData() {
+    setInterval(function() {
+      updateTicktime()
+    }, 5000)
+    }
+    //tps
+    var tpsoptions = {
+        chart: {
+            type: 'spline',
+            events: {
+                load: getTpsData
+            }
+        },
+        title: {
+            text: 'TPS [Low is bad(<20)]'
+        },
+        xAxis: {
+            type: 'datetime',
+        },
+        yAxis: {
+            title: {
+            text: 'TPS'
+            }
+        },
+        legend: {
+            enabled: true
+        },
+        exporting: {
+            enabled: false
+        },
+        series: [{
+            name: 'TPS',
+            data: []
+        }]
+    };
+    var tpschart = Highcharts.chart('tps', tpsoptions)
+
+    updateTps()
+    function updateTps() {
+        fetch('/metrics/tps').then(function(response) {
+        return response.json()
+        }).then(function(data) {
+        data.forEach(element => {
+            tpschart.series[0].addPoint({ x: element[0] * 1000, y: Number(element[1]) })
+        });
+        })
+    }
+    function getTpsData() {
+    setInterval(function() {
+        updateTps()
+    }, 5000)
+    }
+    //ticktime per dimension
+    var dimtickoptions = {
+        chart: {
+            type: 'spline',
+            events: {
+                load: getDimTickData
+            }
+        },
+        title: {
+            text: 'Ticktime/dimension [High is bad(>60)]'
+        },
+        xAxis: {
+            type: 'datetime',
+        },
+        yAxis: {
+            title: {
+            text: 'Ticktime/dimension'
+            }
+        },
+        legend: {
+            enabled: true
+        },
+        exporting: {
+            enabled: false
+        },
+        series: []
+    };
+    var tickperdimchart = Highcharts.chart('ticktime_per_dim', dimtickoptions)
+    updateDimTickTime()
+    function updateDimTickTime() {
+        fetch('/metrics/dim_ticktime').then(function(response) {
+        return response.json()
+        }).then(function(data) {
+            Object.keys(data).forEach(function(key,index) {
+
+                if (typeof(tickperdimchart.series[index]) == "undefined") {
+                    tickperdimchart.addSeries({
+                        name: key,
+                        data: []
+                    })
+                }
+                data[key].forEach(element => {
+                    tickperdimchart.series[index].addPoint({ x: element[0] * 1000, y: Number(element[1]) })
+                });
+            });
+        })
+    }
+    function getDimTickData() {
+    setInterval(function() {
+        updateDimTickTime()
+    }, 5000)
+    }
+    //dimtps
+    var dimtpsoptions = {
+        chart: {
+            type: 'spline',
+            events: {
+                load: getDimTpsData
+            }
+        },
+        title: {
+            text: 'TPS/dimension [Low is bad(<20)]'
+        },
+        xAxis: {
+            type: 'datetime',
+        },
+        yAxis: {
+            title: {
+            text: 'TPS/dimension'
+            }
+        },
+        legend: {
+            enabled: true
+        },
+        exporting: {
+            enabled: false
+        },
+        series: []
+    };
+    var tpsperdimchart = Highcharts.chart('tps_per_dim', dimtpsoptions)
+    updateDimTps()
+    function updateDimTps() {
+        fetch('/metrics/dim_tps').then(function(response) {
+        return response.json()
+        }).then(function(data) {
+            Object.keys(data).forEach(function(key,index) {
+
+                if (typeof(tpsperdimchart.series[index]) == "undefined") {
+                    tpsperdimchart.addSeries({
+                        name: key,
+                        data: []
+                    })
+                }
+                data[key].forEach(element => {
+                    tpsperdimchart.series[index].addPoint({ x: element[0] * 1000, y: Number(element[1]) })
+                });
+            });
+        })
+    }
+    function getDimTpsData() {
+    setInterval(function() {
+        updateDimTps()
+    }, 5000)
+    }
+
+
+
+    
+</script>
+</br>
 {% endblock %}

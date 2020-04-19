@@ -393,7 +393,15 @@ footer a {
 /* RESPONSIVE LAYOUT */
 
 @media(min-width: 900px) {
-	/*NAV*/
+	/*NAV*/.chart {
+    height: 200px;
+    float: left;
+    width: 50%;
+}
+
+.spacer {
+    height: 20px;
+}
 	.nav {
 		position: fixed;
 	}
@@ -478,4 +486,13 @@ footer a {
 	footer {
 		justify-content: space-between;
 	}
+}
+.chart {
+    height: 200px;
+    float: left;
+    width: 25%;
+}
+
+.spacer {
+    height: 20px;
 }

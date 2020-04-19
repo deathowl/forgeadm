@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+
 <div class="column is-4 is-offset-4">
-    <h3 class="title">Login</h3>
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             <div class="notification is-danger">
@@ -11,6 +12,8 @@
         {% endif %}
     {% endwith %}
     <div class="box">
+        <h3 class="title">Login</h3>
+
         <form method="POST" action="/login">
 
             <div class="field">

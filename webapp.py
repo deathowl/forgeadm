@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, redirect
 from flask_login import LoginManager
 from settings import SERVER_PASS, PORT, DEBUG, SECRET_KEY
 from auth import User
@@ -17,6 +17,9 @@ def create_app():
     def user_loader(email):
         user = User()
         return user
+    @login_manager.unauthorized_handler
+    def unauthorized_callback():
+        return redirect('/login')
 
     # blueprint for auth routes in our app
     from auth import auth as auth_blueprint
@@ -28,6 +31,8 @@ def create_app():
 
     app.register_blueprint(main_blueprint)
 
+    from metrics import metrics
+    app.register_blueprint(metrics)
     return app
 
 
