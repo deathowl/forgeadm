@@ -1,9 +1,9 @@
 from pystemd.systemd1 import Unit
 
 
-class ArkService:
+class ForgeService:
     def __init__(self):
-        self.unit = Unit(b"ark.service", _autoload=True)
+        self.unit = Unit(b"minecraft.service", _autoload=True)
 
     def status(self) -> str:
         return self.unit.Unit.ActiveState.decode("utf-8") 

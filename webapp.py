@@ -5,7 +5,7 @@ from auth import User
 
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder='static')
 
     app.config["SERVER_PASS"] = SERVER_PASS
     app.config["SECRET_KEY"] = SECRET_KEY

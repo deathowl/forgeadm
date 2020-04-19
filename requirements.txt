@@ -1,3 +1,5 @@
 flask
 flask-login
 pystemd
+mcrcon==0.5.2
+prometheus-api-client
