@@ -1,0 +1,19 @@
+[Unit]
+Description=MyForge Server
+After=network.target
+
+[Service]
+WorkingDirectory=/opt/forgeadm
+User=root
+Group=root
+Environment=WORLD_DIR=/opt/forge/world
+Environment=RCON_HOST=127.0.0.1
+Environment=RCON_PORT=25575
+Environment=RCON_PASSWORD=YOURPASSHERE
+Environment=WORLD_DIR=/opt/forge
+ExecStart=/usr/bin/python3 /opt/forgeadm/webapp.py
+Restart=on-failure
+RestartSec=30s
+
+[Install]
+WantedBy=multi-user.target
