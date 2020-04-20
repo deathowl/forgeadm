@@ -42,7 +42,6 @@ class PrometheusClient:
         return self.prom.get_metric_range_data(
             metric_name=metricname,
             start_time=datetime.datetime.now()
-            - datetime.timedelta(minutes=5)
-            + datetime.timedelta(hours=1),
-            end_time=datetime.datetime.now() + datetime.timedelta(hours=1),
+            - datetime.timedelta(minutes=5),
+            end_time=datetime.datetime.now(),
         )
