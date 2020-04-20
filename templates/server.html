@@ -31,6 +31,27 @@
         <div id="ticktime_per_dim" class="chart"></div>
         <div id="tps" class="chart"></div>
         <div id="tps_per_dim" class="chart"></div>
+        <h1 class="title">Installed mods</h1>
+        <table style="margin-left: auto; margin-right: auto; text-align: center;">
+            <thead style="margin-left: auto; margin-right: auto; text-align: center;">
+            <tr style="text-align: center;">
+                <th style="font-size: large; font-weight: bold; text-align: center;">
+                    Mod name
+                </th>
+                <th style="font-size: large; font-weight: bold; text-align: center;">
+                    Mod version
+                </th>
+            </tr>
+            </thead>
+            <tbody style="text-align: center;">
+                {% for key, value in installed_mods.items() %}
+                    <tr style="text-align: center;">
+                        <td style="text-align: center;">{{ key }}</td>
+                        <td style="text-align: center;">{{ value }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 </div>
 <script>
     // ticktime

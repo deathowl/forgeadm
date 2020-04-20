@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-
+import manager
 from service import ForgeService
 from flask_login import login_required
 
@@ -15,8 +15,9 @@ def index():
 @login_required
 def server():
     service_status = ForgeService().status()
+    mods=manager.Manager("/opt/forge").get_installed_mods()
     #service_status = b'active'.decode("utf-8") 
-    return render_template("server.html", service_status=service_status)
+    return render_template("server.html", service_status=service_status, installed_mods=mods)
 
 @main.route("/server", methods=["POST"])
 @login_required
