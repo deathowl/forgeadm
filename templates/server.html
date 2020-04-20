@@ -4,6 +4,13 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <div class="box">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="notification is-info">
+            {{ messages[0] }}.
+        </div>
+    {% endif %}
+    {% endwith %}
     <h1 class="title"> Server Management </h1>
 
         {% if service_status == "activating" %}
