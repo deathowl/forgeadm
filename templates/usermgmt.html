@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+
+<div class="column is-4 is-offset-4">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="notification is-info">
+                {{ messages[0] }}.
+            </div>
+        {% endif %}
+    {% endwith %}
+    <div class="box">
+        <h3 class="title">Op user</h3>
+
+        <form method="POST" action="/userop">
+            <select name="user" style="margin-bottom:10px;">
+                {% for item in users %}
+                  <option  value="{{item}}">{{item}}</option>
+               {% endfor %}
+               </select>
+            <button class="button is-block is-info is-large is-fullwidth">Op!</button>
+        </form>
+    </div>
+    <div class="box">
+        <h3 class="title">De-Op user</h3>
+
+        <form method="POST" action="/userdeop">
+            <select name="user" style="margin-bottom:10px;">
+                {% for item in users %}
+                  <option  value="{{item}}">{{item}}</option>
+               {% endfor %}
+               </select>
+            <button class="button is-block is-info is-large is-fullwidth">De-Op!</button>
+        </form>
+    </div>
+
+    <div class="box">
+        <h3 class="title">Change gamemode for user</h3>
+
+        <form method="POST" action="/gamemode">
+            <select name="user" style="margin-bottom:10px;">
+                {% for item in users %}
+                  <option  value="{{item}}">{{item}}</option>
+               {% endfor %}
+               </select>
+               <select name="gmode" style="margin-bottom:10px;">
+                {% for modeid, modename in modes.items() %}
+                  <option  value="{{modeid}}">{{modename}}</option>
+               {% endfor %}
+               </select>
+            <button class="button is-block is-info is-large is-fullwidth">De-Op!</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

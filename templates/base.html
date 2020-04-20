@@ -28,21 +28,32 @@
 				<a href="/"><li class="h">
 					<div class="overlay"></div>
 					Home
-				</li></a>
-				<a href="/server"><li class="h">
+                </li></a>
+                {% if current_user.is_authenticated %}
+                <a href="/server"><li class="h">
                     <div class="overlay"></div>
 					Admin
 				</li></a>
+                {% endif %}
 				<div class="log"><img alt="MyServer Logo" class="logo" src="/static/img/logo.png"></div>
-
-				<a href="/login"><li class="h">
+                {% if current_user.is_authenticated %}
+                <a href="/usermgmt"><li class="h">
                     <div class="overlay"></div>
-					Login
+					Manage Users
 				</li></a>
+                {% endif %}
+                {% if current_user.is_authenticated %}
 				<a href="/logout"><li class="h">
                     <div class="overlay"></div>
 					Log out
-				</li></a>
+                </li></a>
+                {% else %}
+                <a href="/login"><li class="h">
+                    <div class="overlay"></div>
+					Login
+                </li></a>
+                {% endif %}
+
 
 			</ul>
 			<div class="mnav" id="mnav">
@@ -51,13 +62,17 @@
 				</li></a>
 				<a href="/server"><li class="i">
 					Admin
-				</li></a>
-				<a href="/login"><li class="i">
-					Login
-				</li></a>
-				<a href="/logout"><li class="i">
+                </li></a>
+                {% if current_user.is_authenticated %}
+                <a href="/logout"><li class="i">
 					Log out
-				</li></a>
+                </li></a>
+                {% else %}
+                <a href="/login"><li class="i">
+					Login
+                </li></a>
+                {% endif %}
+
 			</div>
 		</div>
 

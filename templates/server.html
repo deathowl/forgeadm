@@ -16,6 +16,10 @@
                 <input type="hidden", name="status", value=0>
                 <button class="button is-block is-danger is-large is-fullwidth">Terminate</button>
             </form>
+            <h1 class="title"> Backup server </h1>
+            <form method="POST" action="/trigger-save">
+                <button class="button is-block is-large is-fullwidth">Save</button>
+            </form>
         
         {% elif service_status == "failed" %}
             <div>Server is dead, start</div>
@@ -25,6 +29,8 @@
             </form>
         
         {% endif %}
+    
+        
         <h1 class="title"> Server Charts </h1>
 
         <div id="ticktime" class="chart"></div>
